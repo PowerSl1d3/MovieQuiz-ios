@@ -61,6 +61,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
 
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,14 +105,14 @@ extension MovieQuizViewController {
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.cornerRadius = 15
-        imageView.layer.borderColor = isCorrect ? UIColor.green.cgColor : UIColor.red.cgColor
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
 
         if isCorrect {
             correctAnswers += 1
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.setButtonsEnableState(true)
             self.reloadResultState()
             self.showNextQuestionOrResults()
         }
@@ -118,7 +120,6 @@ extension MovieQuizViewController {
 
     private func reloadResultState() {
         imageView.layer.borderWidth = 0
-        imageView.layer.cornerRadius = 0
     }
 
     private func showNextQuestionOrResults() {
@@ -146,17 +147,26 @@ private extension MovieQuizViewController {
                                  question: model.text,
                                  questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
     }
+
+    func setButtonsEnableState(_ state: Bool) {
+        yesButton.isEnabled = state
+        noButton.isEnabled = state
+    }
 }
 
 
 // MARK: - Actions
 private extension MovieQuizViewController {
     @IBAction func yesButtonClicked(_ sender: UIButton) {
+        setButtonsEnableState(false)
+
         let currentViewModel = questions[currentQuestionIndex]
         showAnswerResult(isCorrect: currentViewModel.correctAnswer == true)
     }
 
     @IBAction func noButtonClicked(_ sender: UIButton) {
+        setButtonsEnableState(false)
+
         let currentViewModel = questions[currentQuestionIndex]
         showAnswerResult(isCorrect: currentViewModel.correctAnswer == false)
     }
