@@ -86,9 +86,12 @@ extension MovieQuizViewController {
         let alert = UIAlertController(
             title: result.title,
             message: result.text,
-            preferredStyle: .alert)
+            preferredStyle: .alert
+        )
 
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+            guard let self else { return }
+
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
 
@@ -111,7 +114,9 @@ extension MovieQuizViewController {
             correctAnswers += 1
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self else { return }
+
             self.setButtonsEnableState(true)
             self.reloadResultState()
             self.showNextQuestionOrResults()
