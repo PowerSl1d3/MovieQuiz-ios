@@ -5,7 +5,9 @@ final class MovieQuizViewController: UIViewController {
     private var correctAnswers: Int = 0
 
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+
+    private var questionFactory: QuestionFactoryProtocol?
+
     private var currentQuestion: QuizQuestion?
 
     @IBOutlet private weak var imageView: UIImageView!
@@ -19,10 +21,21 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
+        questionFactory = QuestionFactory(delegate: self)
+        questionFactory?.requestNextQuestion()
+    }
+}
+
+// MARK: - QuestionFactoryDelegate
+
+extension MovieQuizViewController: QuestionFactoryDelegate {
+    func didRecieveNextQuestion(question: QuizQuestion?) {
+        guard let question else { return }
+
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
         }
     }
 }
@@ -48,13 +61,7 @@ extension MovieQuizViewController {
 
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-
-            if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = firstQuestion
-                let viewModel = self.convert(model: firstQuestion)
-
-                self.show(quiz: viewModel)
-            }
+            self.questionFactory?.requestNextQuestion()
         }
 
         alert.addAction(action)
@@ -94,13 +101,7 @@ extension MovieQuizViewController {
             show(quiz: viewModel)
         } else {
             currentQuestionIndex += 1
-
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let viewModel = convert(model: nextQuestion)
-
-                show(quiz: viewModel)
-            }
+            questionFactory?.requestNextQuestion()
         }
     }
 }
