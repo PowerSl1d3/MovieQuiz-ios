@@ -7,6 +7,7 @@ final class MovieQuizViewController: UIViewController {
     private let questionsAmount: Int = 10
 
     private var questionFactory: QuestionFactoryProtocol?
+    private var alertPresenter: AlertPresenterProtocol?
 
     private var currentQuestion: QuizQuestion?
 
@@ -23,6 +24,8 @@ final class MovieQuizViewController: UIViewController {
 
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+
+        alertPresenter = AlertPresenter(delegate: self)
     }
 }
 
@@ -50,13 +53,9 @@ extension MovieQuizViewController {
     }
 
     private func show(quiz result: QuizResultsViewModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert
-        )
-
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
+        let alertModel = AlertModel(title: result.title,
+                                    message: result.text,
+                                    buttonText: result.buttonText) { [weak self] in
             guard let self else { return }
 
             self.currentQuestionIndex = 0
@@ -64,9 +63,7 @@ extension MovieQuizViewController {
             self.questionFactory?.requestNextQuestion()
         }
 
-        alert.addAction(action)
-
-        self.present(alert, animated: true, completion: nil)
+        alertPresenter?.show(alertModel: alertModel)
     }
 
     private func showAnswerResult(isCorrect: Bool) {
