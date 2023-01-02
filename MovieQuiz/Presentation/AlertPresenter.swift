@@ -28,8 +28,6 @@ struct AlertPresenter: AlertPresenterProtocol {
 
         alert.addAction(action)
 
-        DispatchQueue.main.async {
-            delegate?.present(alert, animated: true, completion: nil)
-        }
+        delegate?.present(alert, animated: true, completion: nil)
     }
 }

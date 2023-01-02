@@ -14,6 +14,9 @@
 		902A8AB42902676600BA4803 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 902A8AB22902676600BA4803 /* YS Display-Medium.ttf */; };
 		907565E129363AED0061F2E5 /* StatisticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907565E029363AED0061F2E5 /* StatisticService.swift */; };
 		907565E329363FBC0061F2E5 /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907565E229363FBC0061F2E5 /* GameRecord.swift */; };
+		907B012C2962C87900C36E54 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907B012B2962C87900C36E54 /* NetworkClient.swift */; };
+		907B012E2962D0C400C36E54 /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907B012D2962D0C400C36E54 /* MostPopularMovies.swift */; };
+		907B01302962D22900C36E54 /* MoviesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907B012F2962D22900C36E54 /* MoviesLoader.swift */; };
 		90B96B8D2932E958008E2A06 /* QuestionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B96B8C2932E958008E2A06 /* QuestionFactory.swift */; };
 		90B96B902932EFE1008E2A06 /* QuizQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B96B8F2932EFE1008E2A06 /* QuizQuestion.swift */; };
 		90B96B922932F000008E2A06 /* QuizStepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B96B912932F000008E2A06 /* QuizStepViewModel.swift */; };
@@ -38,6 +41,9 @@
 		902A8AB22902676600BA4803 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		907565E029363AED0061F2E5 /* StatisticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticService.swift; sourceTree = "<group>"; };
 		907565E229363FBC0061F2E5 /* GameRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecord.swift; sourceTree = "<group>"; };
+		907B012B2962C87900C36E54 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		907B012D2962D0C400C36E54 /* MostPopularMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMovies.swift; sourceTree = "<group>"; };
+		907B012F2962D22900C36E54 /* MoviesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoader.swift; sourceTree = "<group>"; };
 		90B96B8C2932E958008E2A06 /* QuestionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactory.swift; sourceTree = "<group>"; };
 		90B96B8F2932EFE1008E2A06 /* QuizQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuizQuestion.swift; path = MovieQuiz/Models/QuizQuestion.swift; sourceTree = SOURCE_ROOT; };
 		90B96B912932F000008E2A06 /* QuizStepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuizStepViewModel.swift; path = MovieQuiz/Models/QuizStepViewModel.swift; sourceTree = SOURCE_ROOT; };
@@ -96,6 +102,7 @@
 				90B96B932932F022008E2A06 /* QuizResultsViewModel.swift */,
 				901A98B82934A1C0005E624F /* AlertModel.swift */,
 				907565E229363FBC0061F2E5 /* GameRecord.swift */,
+				907B012D2962D0C400C36E54 /* MostPopularMovies.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -116,6 +123,8 @@
 				901A98B629348E09005E624F /* QuestionFactoryDelegate.swift */,
 				90B96B8C2932E958008E2A06 /* QuestionFactory.swift */,
 				907565E029363AED0061F2E5 /* StatisticService.swift */,
+				907B012B2962C87900C36E54 /* NetworkClient.swift */,
+				907B012F2962D22900C36E54 /* MoviesLoader.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -259,8 +268,10 @@
 				901A98B729348E09005E624F /* QuestionFactoryDelegate.swift in Sources */,
 				901A98BB2934A23E005E624F /* AlertPresenter.swift in Sources */,
 				901A98B92934A1C0005E624F /* AlertModel.swift in Sources */,
+				907B012E2962D0C400C36E54 /* MostPopularMovies.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				907565E329363FBC0061F2E5 /* GameRecord.swift in Sources */,
+				907B012C2962C87900C36E54 /* NetworkClient.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				90B96B96293318EA008E2A06 /* QuestionFactoryProtocol.swift in Sources */,
 				90B96B942932F022008E2A06 /* QuizResultsViewModel.swift in Sources */,
@@ -270,6 +281,7 @@
 				90B96B8D2932E958008E2A06 /* QuestionFactory.swift in Sources */,
 				AD77F5742857F8810062FB14 /* Date+Extensions.swift in Sources */,
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
+				907B01302962D22900C36E54 /* MoviesLoader.swift in Sources */,
 				90B96B902932EFE1008E2A06 /* QuizQuestion.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
 			);
@@ -418,7 +430,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N29P9VDV4Y;
+				DEVELOPMENT_TEAM = 45X94MQMRK;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MovieQuiz/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -434,7 +446,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuiz;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuiz.smarty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -449,7 +461,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N29P9VDV4Y;
+				DEVELOPMENT_TEAM = 45X94MQMRK;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MovieQuiz/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -465,7 +477,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuiz;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuiz.smarty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
