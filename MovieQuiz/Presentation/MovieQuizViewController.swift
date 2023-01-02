@@ -16,17 +16,21 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
 
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
+
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
-
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         alertPresenter = AlertPresenter(delegate: self)
+
+        questionFactory?.loadData()
+        showLoadingIndicator()
     }
 }
 
@@ -41,6 +45,15 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
+    }
+
+    func didLoadDataFromServer() {
+        questionFactory?.requestNextQuestion()
+        hideLoadingIndicator()
+    }
+
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
     }
 }
 
@@ -114,6 +127,30 @@ extension MovieQuizViewController {
             questionFactory?.requestNextQuestion()
         }
     }
+
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+
+        let alertModel = AlertModel(title: "Ошибка",
+                                    message: message,
+                                    buttonText: "Попробовать ещё раз") { [weak self] in
+            guard let self else { return }
+
+            self.showLoadingIndicator()
+        }
+
+        alertPresenter?.show(alertModel: alertModel)
+    }
 }
 
 
@@ -121,7 +158,7 @@ extension MovieQuizViewController {
 
 private extension MovieQuizViewController {
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
+        return QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(),
                                  question: model.text,
                                  questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
