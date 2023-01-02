@@ -16,8 +16,11 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
 
-    @IBOutlet weak var noButton: UIButton!
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
+
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -113,6 +116,30 @@ extension MovieQuizViewController {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
+    }
+
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+
+        let alertModel = AlertModel(title: "Ошибка",
+                                    message: message,
+                                    buttonText: "Попробовать ещё раз") { [weak self] in
+            guard let self else { return }
+
+            self.showLoadingIndicator()
+        }
+
+        alertPresenter?.show(alertModel: alertModel)
     }
 }
 
