@@ -26,7 +26,10 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
+        questionFactory = QuestionFactory(
+            delegate: self,
+            moviesLoader: MoviesLoader(networkClient: NetworkClient())
+        )
         alertPresenter = AlertPresenter(delegate: self)
 
         questionFactory?.loadData()
