@@ -1,11 +1,9 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
 
-    private let questionsAmount: Int = 10
-
+    private let presenter = MovieQuizPresenter()
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private let statisticService: StatisticService = StatisticServiceImplementation()
@@ -44,7 +42,7 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
         guard let question else { return }
 
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
@@ -75,7 +73,7 @@ extension MovieQuizViewController {
                                     buttonText: result.buttonText) { [weak self] in
             guard let self else { return }
 
-            self.currentQuestionIndex = 0
+            self.presenter.resetQuestionIndex()
             self.correctAnswers = 0
             self.questionFactory?.requestNextQuestion()
         }
@@ -106,14 +104,14 @@ extension MovieQuizViewController {
     }
 
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionsAmount - 1 {
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
+        if presenter.isLastQuestion() {
+            statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
 
             let gamesCount = statisticService.gamesCount
             let bestGame = statisticService.bestGame
             let totalAccuracy = statisticService.totalAccuracy
             let text = """
-            Ваш результат: \(correctAnswers)/\(questionsAmount)
+            Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)
             Количество сыгранных квизов: \(gamesCount)
             Рекорд: \(bestGame.correct)/\(bestGame.total) (\(bestGame.date.dateTimeString))
             Средняя точность: \(String(format: "%.2f", totalAccuracy * 100))%
@@ -126,7 +124,7 @@ extension MovieQuizViewController {
 
             show(quiz: viewModel)
         } else {
-            currentQuestionIndex += 1
+            presenter.switchToNextIndex()
             questionFactory?.requestNextQuestion()
         }
     }
@@ -160,12 +158,6 @@ extension MovieQuizViewController {
 // MARK: - Private
 
 private extension MovieQuizViewController {
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(data: model.image) ?? UIImage(),
-                                 question: model.text,
-                                 questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-    }
-
     func setButtonsEnableState(_ state: Bool) {
         yesButton.isEnabled = state
         noButton.isEnabled = state
