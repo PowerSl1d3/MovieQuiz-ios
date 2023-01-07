@@ -138,3 +138,13 @@ private extension MovieQuizPresenter {
         return resultMessage
     }
 }
+
+#if DEBUG
+// MARK: - Private Proxy Test Extenstion
+/// Данное расширение используется только для тестирования приватных методов класса.
+/// Недоступно в релизной сборке.
+
+extension MovieQuizPresenter {
+    func convertTest(model: QuizQuestion) -> QuizStepViewModel { convert(model: model) }
+}
+#endif
